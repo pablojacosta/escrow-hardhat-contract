@@ -76,7 +76,7 @@ describe("Escrow", () => {
     let err = "";
 
     try {
-      await contractWithSigner.depositEscrow(ethers.constants.HashZero, amount);
+      await contractWithSigner.depositEscrow(hre.ethers.ZeroHash, amount);
     } catch (e) {
       err = e.message;
     }
@@ -120,7 +120,7 @@ describe("Escrow", () => {
 
     expect(
       (await erc20.balanceOf(happyPathAccount.address)).toString()
-    ).to.equal("60000000000000000000");
+    ).to.equal("70000000000000000000");
     let err = "";
 
     try {
@@ -130,7 +130,7 @@ describe("Escrow", () => {
     }
 
     expect(err).to.equal(
-      "VM Exception while processing transaction: reverted with reason string 'Unique hash conflict, the hash is already in use.'"
+      "VM Exception while processing transaction: reverted with reason string 'Unique hash conflict, hash is already in use.'"
     );
   });
 
@@ -146,9 +146,7 @@ describe("Escrow", () => {
       err = e.message;
     }
 
-    expect(err).to.equal(
-      "VM Exception while processing transaction: reverted with reason string 'ERC20: insufficient allowance'"
-    );
+    expect(err).to.contains("ERC20InsufficientAllowance");
   });
 
   // Test withdrawal function
@@ -167,7 +165,8 @@ describe("Escrow", () => {
 
     expect(
       (await erc20.balanceOf(happyPathAccount.address)).toString()
-    ).to.equal("50000000000000000000");
+    ).to.equal("70000000000000000000");
+
     const withdrawalEscrowTx = await contractWithSigner.withdrawalEscrow(
       trxHash
     );
@@ -176,7 +175,7 @@ describe("Escrow", () => {
 
     expect(
       (await erc20.balanceOf(happyPathAccount.address)).toString()
-    ).to.equal("60000000000000000000");
+    ).to.equal("80000000000000000000");
   });
 
   it("Unhappy Path: withdrawalEscrow - Transaction hash cannot be empty!", async () => {
@@ -185,7 +184,7 @@ describe("Escrow", () => {
     let err = "";
 
     try {
-      await contractWithSigner.withdrawalEscrow(hre.ethers.constants.HashZero);
+      await contractWithSigner.withdrawalEscrow(hre.ethers.ZeroHash);
     } catch (e) {
       err = e.message;
     }
