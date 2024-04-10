@@ -54,7 +54,9 @@ describe("Escrow", () => {
   // Test depositEscrow function
 
   it("Happy Path: depositEscrow", async () => {
-    const { happyPathAccount, contract } = await loadFixture(deployContract);
+    const { happyPathAccount, contract, erc20 } = await loadFixture(
+      deployContract
+    );
     const contractWithSigner = contract.connect(happyPathAccount);
     const trxHash = await contract.getHash(amount);
     const depositEscrowTx = await contractWithSigner.depositEscrow(
@@ -105,7 +107,9 @@ describe("Escrow", () => {
   });
 
   it("Unhappy Path: depositEscrow - Unique hash conflict, hash is already in use.", async () => {
-    const { happyPathAccount, contract } = await loadFixture(deployContract);
+    const { happyPathAccount, contract, erc20 } = await loadFixture(
+      deployContract
+    );
     const contractWithSigner = contract.connect(happyPathAccount);
     const trxHash = await contract.getHash(amount);
     const depositEscrowTx = await contractWithSigner.depositEscrow(
@@ -150,7 +154,9 @@ describe("Escrow", () => {
   // Test withdrawal function
 
   it("Happy Path: withdrawalEscrow", async () => {
-    const { happyPathAccount, contract } = await loadFixture(deployContract);
+    const { happyPathAccount, contract, erc20 } = await loadFixture(
+      deployContract
+    );
     const contractWithSigner = contract.connect(happyPathAccount);
     const trxHash = await contract.getHash(amount);
     const depositEscrowTx = await contractWithSigner.depositEscrow(
